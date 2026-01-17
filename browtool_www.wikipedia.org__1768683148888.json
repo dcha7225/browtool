@@ -1,0 +1,94 @@
+{
+  "createdAt": 1768683137815,
+  "startUrl": "https://www.wikipedia.org/",
+  "steps": [
+    {
+      "kind": "fill",
+      "t": "type",
+      "target": {
+        "accessibleName": "Search Wikipedia",
+        "ariaLabel": null,
+        "css": "#searchInput",
+        "id": "searchInput",
+        "labelText": "Search Wikipedia",
+        "nameAttr": "search",
+        "placeholder": null,
+        "role": "textbox",
+        "tag": "input",
+        "testId": null,
+        "text": null,
+        "typeAttr": "search"
+      },
+      "ts": 1768683140175,
+      "url": "https://www.wikipedia.org/",
+      "value": "tsting"
+    },
+    {
+      "bbox": {
+        "height": 44,
+        "relX": 25.90625,
+        "relY": 16.8125,
+        "width": 56,
+        "x": 904.09375,
+        "y": 595.1875
+      },
+      "modifiers": {
+        "altKey": false,
+        "ctrlKey": false,
+        "metaKey": false,
+        "shiftKey": false
+      },
+      "t": "click",
+      "target": {
+        "accessibleName": "Search",
+        "ariaLabel": null,
+        "css": "form#search-form > fieldset > button",
+        "id": null,
+        "labelText": null,
+        "nameAttr": null,
+        "placeholder": null,
+        "role": "button",
+        "tag": "button",
+        "testId": null,
+        "text": "Search",
+        "typeAttr": "submit"
+      },
+      "ts": 1768683140790,
+      "url": "https://www.wikipedia.org/"
+    },
+    {
+      "bbox": {
+        "height": 18.18181800842285,
+        "relX": 17.002853393554688,
+        "relY": -0.79827880859375,
+        "width": 31.640623092651367,
+        "x": 147.9971466064453,
+        "y": 487.79827880859375
+      },
+      "modifiers": {
+        "altKey": false,
+        "ctrlKey": false,
+        "metaKey": false,
+        "shiftKey": false
+      },
+      "t": "click",
+      "target": {
+        "accessibleName": "Test",
+        "ariaLabel": null,
+        "css": "div > div > div > a",
+        "id": null,
+        "labelText": null,
+        "nameAttr": null,
+        "placeholder": null,
+        "role": "link",
+        "tag": "a",
+        "testId": null,
+        "text": "Test",
+        "typeAttr": null
+      },
+      "ts": 1768683143163,
+      "url": "https://en.wikipedia.org/wiki/Special:Search?search=tsting&go=Go&ns0=1"
+    }
+  ],
+  "updatedAt": 1768683143165
+}

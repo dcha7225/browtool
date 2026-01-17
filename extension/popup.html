@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>BrowTool Recorder</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="hdr">
+        <div class="title">BrowTool Recorder</div>
+        <div id="statusPill" class="pill pill--off">OFF</div>
+      </div>
+
+      <div class="meta">
+        <div class="row">
+          <div class="k">Steps</div>
+          <div id="stepsCount" class="v">0</div>
+        </div>
+        <div class="row">
+          <div class="k">Start URL</div>
+          <div id="startUrl" class="v v--url">—</div>
+        </div>
+      </div>
+
+      <div class="btnRow">
+        <button id="btnStart" class="btn btn--primary">Start</button>
+        <button id="btnStop" class="btn">Stop</button>
+      </div>
+
+      <div class="btnRow">
+        <button id="btnExport" class="btn">Export JSON</button>
+        <button id="btnClear" class="btn btn--danger">Clear</button>
+      </div>
+
+      <div class="footer">
+        <div id="msg" class="msg"></div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
+
