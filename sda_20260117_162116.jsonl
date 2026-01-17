@@ -1,0 +1,5 @@
+{"type":"recording","createdAt":"2026-01-17T21:21:16.689Z","name":"sda","description":"sda","initialUrl":"https://en.wikipedia.org/wiki/Main_Page","actionCount":4}
+{"type":"type","index":0,"selector":"[name=\"search\"]","text":"t","timestamp":"2026-01-17T21:20:55.615Z"}
+{"type":"type","index":1,"selector":".cdx-text-input__input.cdx-text-input__input--has-value","text":"testing","timestamp":"2026-01-17T21:20:55.687Z"}
+{"type":"click","index":2,"selector":"button:nth-of-type(1)","timestamp":"2026-01-17T21:20:56.993Z"}
+{"type":"click","index":3,"selector":"a:nth-of-type(1)","timestamp":"2026-01-17T21:21:00.301Z"}
