@@ -1,1 +1,14 @@
+db/*.sqlite
+db/*.sqlite3
+db/*.sqlite*
+__pycache__/
+.venv/
+.python-version
+.pytest_cache/
+.DS_Store
+
 temp.ts
+db/*.sqlite
+db/*.sqlite-journal
+db/*.sqlite-wal
+db/*.sqlite-shm
