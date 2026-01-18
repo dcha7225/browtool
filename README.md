@@ -48,3 +48,21 @@ If your recorded script contains placeholders like `{{arg1}}`, browtool will:
 ### 1-second delay between steps
 
 Replays run with Playwright `slow_mo=1000` enforced, which adds an ~1s delay between actions.
+
+### HTML digest (deterministic)
+
+On each replay, browtool captures the final page HTML and returns a deterministic digest in the MCP tool result:
+
+- `html_digest`: `{ ok: true, digest: { title, text, links } }`
+
+You can cap the digest text size:
+
+```bash
+export BROWTOOL_HTML_MAX_CHARS="20000"
+```
+
+If you’re debugging large pages, you can cap how much HTML is kept in-memory for digesting:
+
+```bash
+export BROWTOOL_HTML_CAPTURE_MAX_BYTES="2000000"
+```

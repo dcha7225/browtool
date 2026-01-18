@@ -5,6 +5,7 @@ import inspect
 from typing import Any, Optional
 
 from . import db
+from .html_summarize import digest_html
 from .runner import run_python_script_text
 from .template import extract_params
 
@@ -47,7 +48,19 @@ def build_mcp(db_path: Optional[str] = None):
         if not tool:
             return {"ok": False, "error": f"Unknown tool: {name}"}
         res = run_python_script_text(tool.script_text, args=args)
-        return {"ok": res.ok, "exit_code": res.exit_code, "stdout": res.stdout, "stderr": res.stderr}
+        html_digest = None
+        if res.html_text:
+            try:
+                html_digest = digest_html(res.html_text)
+            except Exception as e:
+                html_digest = {"ok": False, "error": str(e)}
+        return {
+            "ok": res.ok,
+            "exit_code": res.exit_code,
+            "stdout": res.stdout,
+            "stderr": res.stderr,
+            "html_digest": html_digest,
+        }
 
     @mcp.tool()
     def browtool_reload_tools() -> dict[str, Any]:
@@ -65,7 +78,19 @@ def build_mcp(db_path: Optional[str] = None):
 
                 def _tool(**kwargs) -> dict[str, Any]:
                     res = run_python_script_text(script_text, args=kwargs)
-                    return {"ok": res.ok, "exit_code": res.exit_code, "stdout": res.stdout, "stderr": res.stderr}
+                    html_digest = None
+                    if res.html_text:
+                        try:
+                            html_digest = digest_html(res.html_text)
+                        except Exception as e:
+                            html_digest = {"ok": False, "error": str(e)}
+                    return {
+                        "ok": res.ok,
+                        "exit_code": res.exit_code,
+                        "stdout": res.stdout,
+                        "stderr": res.stderr,
+                        "html_digest": html_digest,
+                    }
 
                 # Expose placeholders as first-class MCP tool params.
                 _tool.__signature__ = inspect.Signature(
