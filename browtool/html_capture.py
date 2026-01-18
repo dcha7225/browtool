@@ -37,6 +37,18 @@ def inject_html_capture(script_text: str, *, html_path: str) -> str:
                     if _bt_pages:
                         _bt_page = _bt_pages[0]
                 if _bt_page is not None:
+                    # Wait for any pending navigation to complete
+                    try:
+                        await _bt_page.wait_for_load_state(\"load\", timeout=15000)
+                    except Exception:
+                        pass
+                    # Wait for network to settle (dynamic content)
+                    try:
+                        await _bt_page.wait_for_load_state(\"networkidle\", timeout=10000)
+                    except Exception:
+                        pass
+                    # Extra buffer for JS rendering
+                    await _bt_page.wait_for_timeout(3000)
                     _bt_html = await _bt_page.content()
                     with open(__BROWTOOL_HTML_PATH, \"w\", encoding=\"utf-8\") as _bt_f:
                         _bt_f.write(_bt_html)
@@ -56,6 +68,18 @@ def inject_html_capture(script_text: str, *, html_path: str) -> str:
                     if _bt_pages:
                         _bt_page = _bt_pages[0]
                 if _bt_page is not None:
+                    # Wait for any pending navigation to complete
+                    try:
+                        _bt_page.wait_for_load_state(\"load\", timeout=15000)
+                    except Exception:
+                        pass
+                    # Wait for network to settle (dynamic content)
+                    try:
+                        _bt_page.wait_for_load_state(\"networkidle\", timeout=10000)
+                    except Exception:
+                        pass
+                    # Extra buffer for JS rendering
+                    _bt_page.wait_for_timeout(3000)
                     _bt_html = _bt_page.content()
                     with open(__BROWTOOL_HTML_PATH, \"w\", encoding=\"utf-8\") as _bt_f:
                         _bt_f.write(_bt_html)
