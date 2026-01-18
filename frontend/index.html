@@ -436,7 +436,7 @@
         .output-panel {
             background: #171717;
             border-radius: 16px;
-            border: 1px solid #2a2a2a;
+            border: 2px solid #3a3a3a;
             overflow: hidden;
         }
 
@@ -491,7 +491,8 @@
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
             font-size: 13px;
             line-height: 1.6;
-            max-height: 300px;
+            min-height: 100px;
+            max-height: 400px;
             overflow-y: auto;
             background: #0f0f0f;
         }
@@ -529,6 +530,350 @@
         .output-line .timestamp {
             color: #555;
             margin-right: 12px;
+        }
+
+        /* Tool Result Panel */
+        .tool-result {
+            background: #171717;
+            border-radius: 16px;
+            border: 2px solid #22c55e;
+            overflow: hidden;
+        }
+
+        .tool-result.error {
+            border-color: #ef4444;
+        }
+
+        .tool-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(34, 197, 94, 0.1);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .tool-result.error .tool-result-header {
+            background: rgba(239, 68, 68, 0.1);
+            border-bottom-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .tool-result-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-result.error .tool-result-header h3 {
+            color: #ef4444;
+        }
+
+        .tool-result-content {
+            padding: 20px;
+        }
+
+        .result-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .result-stat {
+            background: #0f0f0f;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .result-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .result-stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-stat.success .result-stat-value {
+            color: #22c55e;
+        }
+
+        .result-stat.error .result-stat-value {
+            color: #ef4444;
+        }
+
+        .result-output {
+            background: #0f0f0f;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .result-output-header {
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #2a2a2a;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-output-content {
+            padding: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .result-output-content.stderr {
+            color: #f59e0b;
+        }
+
+        .result-output + .result-output {
+            margin-top: 16px;
+        }
+
+        /* HTML Digest Panel */
+        .html-digest {
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .html-digest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .html-digest-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .html-digest-content {
+            padding: 20px;
+        }
+
+        .digest-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .digest-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #a0a0a0;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #0f0f0f;
+            border-radius: 8px;
+        }
+
+        .digest-links {
+            margin-top: 16px;
+        }
+
+        .digest-links h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .digest-links-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .digest-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #0f0f0f;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 12px;
+            text-decoration: none;
+            color: #a5b4fc;
+            transition: all 0.2s;
+        }
+
+        .digest-link:hover {
+            background: #1f1f1f;
+            color: #c7d2fe;
+        }
+
+        .digest-link-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #e0e0e0;
+        }
+
+        .digest-link-href {
+            flex: 2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #6366f1;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .digest-empty {
+            color: #666;
+            font-size: 13px;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* MCP Response Panel */
+        .mcp-response {
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #6366f1;
+            overflow: hidden;
+        }
+
+        .mcp-response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .mcp-response-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a5b4fc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mcp-response-content {
+            padding: 20px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            background: #0f0f0f;
+            overflow-x: auto;
+        }
+
+        .json-key {
+            color: #a5b4fc;
+        }
+
+        .json-value-string {
+            color: #86efac;
+        }
+
+        .json-value-number {
+            color: #fcd34d;
+        }
+
+        .json-value-boolean {
+            color: #f9a8d4;
+        }
+
+        .json-value-null {
+            color: #9ca3af;
+        }
+
+        .json-bracket {
+            color: #6b7280;
+        }
+
+        .json-object {
+            margin-left: 20px;
+        }
+
+        .json-collapsible {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .json-collapsible:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 4px;
+        }
+
+        .json-collapsed .json-object,
+        .json-collapsed .json-array-items {
+            display: none;
+        }
+
+        .json-collapsed .json-preview {
+            display: inline;
+        }
+
+        .json-preview {
+            display: none;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .json-line {
+            padding: 2px 0;
+        }
+
+        .json-array-items {
+            margin-left: 20px;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #3a3a3a;
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #22c55e;
         }
 
         /* Script Preview */
@@ -737,6 +1082,10 @@
         let isRunning = false;
         let currentWebSocket = null;
         let toolToDelete = null;
+        let collectedStdout = [];
+        let collectedStderr = [];
+        let runStartTime = null;
+        let lastMcpResponse = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -869,6 +1218,38 @@
                     </div>
                 </section>
 
+                <!-- Tool Result Panel -->
+                <section class="tool-result" id="tool-result-panel" style="display: none;">
+                    <div class="tool-result-header">
+                        <h3 id="tool-result-title">✓ Tool Completed Successfully</h3>
+                    </div>
+                    <div class="tool-result-content">
+                        <div class="result-summary" id="result-summary">
+                        </div>
+                        <div id="result-outputs">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MCP Response Panel -->
+                <section class="mcp-response" id="mcp-response-panel" style="display: none;">
+                    <div class="mcp-response-header">
+                        <h3>MCP Tool Response</h3>
+                        <button class="copy-btn" onclick="copyMcpResponse()">Copy JSON</button>
+                    </div>
+                    <div class="mcp-response-content" id="mcp-response-content">
+                    </div>
+                </section>
+
+                <!-- HTML Digest Panel -->
+                <section class="html-digest" id="html-digest-panel" style="display: none;">
+                    <div class="html-digest-header">
+                        <h3>Page Content</h3>
+                    </div>
+                    <div class="html-digest-content" id="html-digest-content">
+                    </div>
+                </section>
+
                 <!-- Script Preview -->
                 <section class="script-preview">
                     <div class="script-header">
@@ -910,6 +1291,19 @@
             statusText.textContent = 'Running...';
             outputContent.innerHTML = '';
 
+            // Reset collectors
+            collectedStdout = [];
+            collectedStderr = [];
+            runStartTime = Date.now();
+
+            // Hide result panels from previous run
+            const resultPanel = document.getElementById('tool-result-panel');
+            const digestPanel = document.getElementById('html-digest-panel');
+            const mcpPanel = document.getElementById('mcp-response-panel');
+            if (resultPanel) resultPanel.style.display = 'none';
+            if (digestPanel) digestPanel.style.display = 'none';
+            if (mcpPanel) mcpPanel.style.display = 'none';
+
             // Connect via WebSocket
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/ws/run/${selectedTool.name}`;
@@ -940,11 +1334,18 @@
                         line.appendChild(document.createTextNode(data.message));
                     }
 
+                    // Collect stdout/stderr for result panel
+                    if (data.type === 'stdout') {
+                        collectedStdout.push(data.message);
+                    } else if (data.type === 'stderr') {
+                        collectedStderr.push(data.message);
+                    }
+
                     outputContent.appendChild(line);
                     outputContent.scrollTop = outputContent.scrollHeight;
 
                     if (data.type === 'done') {
-                        finishRun(data.exit_code === 0);
+                        finishRun(data.exit_code === 0, data.html_digest, data.exit_code);
                     }
                 };
 
@@ -974,7 +1375,7 @@
             outputContent.scrollTop = outputContent.scrollHeight;
         }
 
-        function finishRun(success) {
+        function finishRun(success, htmlDigest, exitCode = 0) {
             isRunning = false;
             currentWebSocket = null;
 
@@ -992,6 +1393,196 @@
                 statusDot.className = 'status-dot error';
                 statusText.textContent = 'Failed';
             }
+
+            // Calculate run duration
+            const duration = runStartTime ? ((Date.now() - runStartTime) / 1000).toFixed(1) : '0';
+
+            // Display Tool Result panel
+            const resultPanel = document.getElementById('tool-result-panel');
+            const resultTitle = document.getElementById('tool-result-title');
+            const resultSummary = document.getElementById('result-summary');
+            const resultOutputs = document.getElementById('result-outputs');
+
+            resultPanel.style.display = 'block';
+            resultPanel.className = success ? 'tool-result' : 'tool-result error';
+            resultTitle.innerHTML = success
+                ? '✓ Tool Completed Successfully'
+                : '✗ Tool Failed';
+
+            // Summary stats
+            resultSummary.innerHTML = `
+                <div class="result-stat ${success ? 'success' : 'error'}">
+                    <div class="result-stat-value">${exitCode}</div>
+                    <div class="result-stat-label">Exit Code</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value">${duration}s</div>
+                    <div class="result-stat-label">Duration</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value">${collectedStdout.length + collectedStderr.length}</div>
+                    <div class="result-stat-label">Output Lines</div>
+                </div>
+            `;
+
+            // Output sections
+            let outputsHtml = '';
+
+            if (collectedStdout.length > 0) {
+                outputsHtml += `
+                    <div class="result-output">
+                        <div class="result-output-header">Standard Output (${collectedStdout.length} lines)</div>
+                        <div class="result-output-content">${escapeHtml(collectedStdout.join('\n'))}</div>
+                    </div>
+                `;
+            }
+
+            if (collectedStderr.length > 0) {
+                outputsHtml += `
+                    <div class="result-output">
+                        <div class="result-output-header">Standard Error (${collectedStderr.length} lines)</div>
+                        <div class="result-output-content stderr">${escapeHtml(collectedStderr.join('\n'))}</div>
+                    </div>
+                `;
+            }
+
+            if (collectedStdout.length === 0 && collectedStderr.length === 0) {
+                outputsHtml = '<div class="digest-empty">No output captured</div>';
+            }
+
+            resultOutputs.innerHTML = outputsHtml;
+
+            // Display HTML digest if available
+            const digestPanel = document.getElementById('html-digest-panel');
+            const digestContent = document.getElementById('html-digest-content');
+
+            if (htmlDigest && htmlDigest.ok && htmlDigest.digest) {
+                const digest = htmlDigest.digest;
+                digestPanel.style.display = 'block';
+
+                let html = '';
+
+                // Page title
+                if (digest.title) {
+                    html += `<div class="digest-title">${escapeHtml(digest.title)}</div>`;
+                }
+
+                // Page text content
+                if (digest.text) {
+                    const truncatedText = digest.text.length > 2000
+                        ? digest.text.substring(0, 2000) + '...'
+                        : digest.text;
+                    html += `<div class="digest-text">${escapeHtml(truncatedText)}</div>`;
+                }
+
+                // Links
+                if (digest.links && digest.links.length > 0) {
+                    html += `
+                        <div class="digest-links">
+                            <h4>Links Found (${digest.links.length})</h4>
+                            <div class="digest-links-list">
+                                ${digest.links.slice(0, 20).map(link => `
+                                    <a href="${escapeHtml(link.href)}" target="_blank" rel="noopener" class="digest-link">
+                                        <span class="digest-link-text">${escapeHtml(link.text || '(no text)')}</span>
+                                        <span class="digest-link-href">${escapeHtml(link.href)}</span>
+                                    </a>
+                                `).join('')}
+                                ${digest.links.length > 20 ? `<div class="digest-empty">... and ${digest.links.length - 20} more links</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (!html) {
+                    html = '<div class="digest-empty">No content captured from page</div>';
+                }
+
+                digestContent.innerHTML = html;
+            } else {
+                digestPanel.style.display = 'none';
+            }
+
+            // Build and display MCP Response
+            lastMcpResponse = {
+                ok: success,
+                exit_code: exitCode,
+                stdout: collectedStdout.join('\n'),
+                stderr: collectedStderr.join('\n'),
+                html_digest: htmlDigest || null
+            };
+
+            const mcpPanel = document.getElementById('mcp-response-panel');
+            const mcpContent = document.getElementById('mcp-response-content');
+            mcpPanel.style.display = 'block';
+            mcpContent.innerHTML = renderJson(lastMcpResponse);
+        }
+
+        function renderJson(obj, indent = 0) {
+            if (obj === null) {
+                return '<span class="json-value-null">null</span>';
+            }
+            if (typeof obj === 'boolean') {
+                return `<span class="json-value-boolean">${obj}</span>`;
+            }
+            if (typeof obj === 'number') {
+                return `<span class="json-value-number">${obj}</span>`;
+            }
+            if (typeof obj === 'string') {
+                const escaped = escapeHtml(obj);
+                const truncated = escaped.length > 200 ? escaped.substring(0, 200) + '...' : escaped;
+                return `<span class="json-value-string">"${truncated}"</span>`;
+            }
+            if (Array.isArray(obj)) {
+                if (obj.length === 0) {
+                    return '<span class="json-bracket">[]</span>';
+                }
+                const itemCount = obj.length;
+                const preview = `<span class="json-preview"> [ ${itemCount} items ]</span>`;
+                let html = `<span class="json-collapsible" onclick="toggleJson(this)"><span class="json-bracket">[</span>${preview}</span>`;
+                html += '<div class="json-array-items">';
+                obj.forEach((item, i) => {
+                    const comma = i < obj.length - 1 ? ',' : '';
+                    html += `<div class="json-line">${renderJson(item, indent + 1)}${comma}</div>`;
+                });
+                html += '</div>';
+                html += '<span class="json-bracket">]</span>';
+                return html;
+            }
+            if (typeof obj === 'object') {
+                const keys = Object.keys(obj);
+                if (keys.length === 0) {
+                    return '<span class="json-bracket">{}</span>';
+                }
+                const preview = `<span class="json-preview"> { ${keys.length} fields }</span>`;
+                let html = `<span class="json-collapsible" onclick="toggleJson(this)"><span class="json-bracket">{</span>${preview}</span>`;
+                html += '<div class="json-object">';
+                keys.forEach((key, i) => {
+                    const comma = i < keys.length - 1 ? ',' : '';
+                    html += `<div class="json-line"><span class="json-key">${escapeHtml(key)}</span>: ${renderJson(obj[key], indent + 1)}${comma}</div>`;
+                });
+                html += '</div>';
+                html += '<span class="json-bracket">}</span>';
+                return html;
+            }
+            return String(obj);
+        }
+
+        function toggleJson(el) {
+            el.parentElement.classList.toggle('json-collapsed');
+        }
+
+        function copyMcpResponse() {
+            if (!lastMcpResponse) return;
+            const text = JSON.stringify(lastMcpResponse, null, 2);
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy JSON';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
         }
 
         function showDeleteModal(name) {

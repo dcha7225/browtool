@@ -14,6 +14,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import db, template
+from .html_capture import inject_html_capture
+from .html_summarize import digest_html
 from .playwright_script import coerce_launch_options
 
 app = FastAPI(title="BrowTool Dashboard")
@@ -106,11 +108,19 @@ async def run_tool(name: str, request: RunToolRequest):
     from .runner import run_python_script_text
     result = run_python_script_text(tool.script_text, args=request.args)
 
+    html_digest = None
+    if result.html_text:
+        try:
+            html_digest = digest_html(result.html_text)
+        except Exception as e:
+            html_digest = {"ok": False, "error": str(e)}
+
     return {
         "ok": result.ok,
         "exit_code": result.exit_code,
         "stdout": result.stdout,
         "stderr": result.stderr,
+        "html_digest": html_digest,
     }
 
 
@@ -201,9 +211,14 @@ async def websocket_run(websocket: WebSocket, name: str):
         await websocket.send_json({"type": "info", "message": f"Starting {name} with args={args}"})
         await websocket.send_json({"type": "action", "message": "Launching Chromium browser (headful mode)"})
 
-        # Run in subprocess with live output
+        # Run in subprocess with live output and HTML capture
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "tool.py")
+            html_path = os.path.join(td, "artifact.html")
+
+            # Inject HTML capture into the script
+            script_text = inject_html_capture(script_text, html_path=html_path)
+
             with open(path, "w", encoding="utf-8") as f:
                 f.write(script_text)
 
@@ -230,12 +245,23 @@ async def websocket_run(websocket: WebSocket, name: str):
 
             exit_code = await process.wait()
 
+            # Read captured HTML and create digest
+            html_digest = None
+            if os.path.exists(html_path):
+                try:
+                    with open(html_path, "r", encoding="utf-8") as f:
+                        html_text = f.read()
+                    html_digest = digest_html(html_text)
+                    await websocket.send_json({"type": "info", "message": f"Captured page HTML ({len(html_text)} bytes)"})
+                except Exception as e:
+                    html_digest = {"ok": False, "error": str(e)}
+
             if exit_code == 0:
                 await websocket.send_json({"type": "success", "message": "Tool completed successfully"})
             else:
                 await websocket.send_json({"type": "error", "message": f"Tool failed with exit code {exit_code}"})
 
-            await websocket.send_json({"type": "done", "exit_code": exit_code})
+            await websocket.send_json({"type": "done", "exit_code": exit_code, "html_digest": html_digest})
 
     except WebSocketDisconnect:
         pass
