@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "browtool": {
+      "command": "/Users/masonostman/Documents/nexhack/browtool/.venv/bin/python",
+      "args": ["-m", "browtool.mcp_server"]
+    }
+  }
+}
