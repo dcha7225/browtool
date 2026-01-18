@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrowTool - Browser Automation Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #6366f1;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: #1f1f1f;
+            color: #e0e0e0;
+            border: 1px solid #333;
+        }
+
+        .btn-secondary:hover {
+            background: #2a2a2a;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+        }
+
+        /* Sidebar - Tools List */
+        .sidebar {
+            background: #171717;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2a2a;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .tool-count {
+            background: #2a2a2a;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-item {
+            padding: 14px;
+            background: #1f1f1f;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .tool-item:hover {
+            background: #252525;
+        }
+
+        .tool-item.active {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .tool-item h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .tool-item p {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .tool-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .tool-tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            color: #888;
+        }
+
+        .tool-tag.param {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            color: #888;
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        /* Tool Detail Panel */
+        .tool-detail {
+            background: #171717;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .tool-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .tool-detail h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .tool-detail-desc {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+            color: #888;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-icon:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .btn-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Parameters Form */
+        .params-section {
+            margin-bottom: 24px;
+        }
+
+        .params-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .params-section h3::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            background: #6366f1;
+            border-radius: 2px;
+        }
+
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .param-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .param-field.full-width {
+            grid-column: span 2;
+        }
+
+        .param-field label {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .param-field input, .param-field textarea {
+            padding: 12px 14px;
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .param-field input:focus, .param-field textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .param-field textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .no-params {
+            color: #666;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* Run Button */
+        .run-section {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-run {
+            padding: 14px 32px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-run svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-stop {
+            background: #ef4444;
+        }
+
+        .btn-stop:hover {
+            background: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .run-options {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 16px;
+            height: 16px;
+            accent-color: #6366f1;
+        }
+
+        /* Output Panel */
+        .output-panel {
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .output-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .output-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #888;
+        }
+
+        .status-dot.running {
+            background: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+
+        .status-dot.success {
+            background: #22c55e;
+        }
+
+        .status-dot.error {
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .output-content {
+            padding: 20px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #0f0f0f;
+        }
+
+        .output-line {
+            margin-bottom: 4px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .output-line.info {
+            color: #6366f1;
+        }
+
+        .output-line.success {
+            color: #22c55e;
+        }
+
+        .output-line.error {
+            color: #ef4444;
+        }
+
+        .output-line.action {
+            color: #888;
+        }
+
+        .output-line.stdout {
+            color: #e0e0e0;
+        }
+
+        .output-line.stderr {
+            color: #f59e0b;
+        }
+
+        .output-line .timestamp {
+            color: #555;
+            margin-right: 12px;
+        }
+
+        /* Script Preview */
+        .script-preview {
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .script-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .script-content {
+            padding: 20px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #0a0a0a;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #a0a0a0;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #171717;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            padding: 24px;
+            width: 100%;
+            max-width: 500px;
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                max-height: none;
+            }
+
+            .params-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .param-field.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🌐</div>
+                <h1>Brow<span>Tool</span></h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="refreshTools()">↻ Refresh</button>
+                <button class="btn btn-primary" onclick="showRecordHelp()">+ Record New Tool</button>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar - Tools List -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Recorded Tools</h2>
+                    <span class="tool-count" id="tool-count">0 tools</span>
+                </div>
+                <input type="text" class="search-box" placeholder="Search tools..." id="search-box" oninput="filterTools()">
+                <div class="tools-list" id="tools-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading tools...
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content" id="main-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🎯</div>
+                    <h3>Select a Tool</h3>
+                    <p>Choose a recorded tool from the sidebar to view details and run it</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <h2>Delete Tool</h2>
+            <p>Are you sure you want to delete "<span id="delete-tool-name"></span>"? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-primary" style="background: #ef4444;" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Help Modal -->
+    <div class="modal-overlay" id="record-modal">
+        <div class="modal">
+            <h2>Record New Tool</h2>
+            <p style="margin-bottom: 16px; color: #888;">To record a new browser automation tool, run this command in your terminal:</p>
+            <div style="background: #0a0a0a; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #22c55e;">
+                ./recorder.sh https://example.com
+            </div>
+            <p style="margin-top: 16px; color: #888; font-size: 13px;">Or with options:</p>
+            <div style="background: #0a0a0a; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #22c55e; margin-top: 8px;">
+                python3 -m browtool.record --url https://example.com --name my_tool --description "Tool description"
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeRecordModal()">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tools = [];
+        let selectedTool = null;
+        let isRunning = false;
+        let currentWebSocket = null;
+        let toolToDelete = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTools();
+        });
+
+        async function loadTools() {
+            try {
+                const response = await fetch('/api/tools');
+                const data = await response.json();
+                tools = data.tools;
+                renderToolsList();
+            } catch (error) {
+                document.getElementById('tools-list').innerHTML = `
+                    <div class="empty-state" style="padding: 40px;">
+                        <p style="color: #ef4444;">Failed to load tools</p>
+                    </div>
+                `;
+            }
+        }
+
+        function refreshTools() {
+            document.getElementById('tools-list').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading tools...
+                </div>
+            `;
+            loadTools();
+        }
+
+        function renderToolsList() {
+            const container = document.getElementById('tools-list');
+            const countEl = document.getElementById('tool-count');
+            const searchTerm = document.getElementById('search-box').value.toLowerCase();
+
+            const filtered = tools.filter(t =>
+                t.name.toLowerCase().includes(searchTerm) ||
+                t.description.toLowerCase().includes(searchTerm)
+            );
+
+            countEl.textContent = `${tools.length} tool${tools.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 40px;">
+                        <p>${tools.length === 0 ? 'No tools recorded yet' : 'No matching tools'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(tool => `
+                <div class="tool-item ${selectedTool?.name === tool.name ? 'active' : ''}"
+                     onclick="selectTool('${tool.name}')">
+                    <h3>${escapeHtml(tool.name)}</h3>
+                    <p>${escapeHtml(tool.description)}</p>
+                    <div class="tool-meta">
+                        ${tool.params.map(p => `<span class="tool-tag param">{{${escapeHtml(p)}}}</span>`).join('')}
+                        ${tool.params.length === 0 ? '<span class="tool-tag">No params</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterTools() {
+            renderToolsList();
+        }
+
+        function selectTool(name) {
+            selectedTool = tools.find(t => t.name === name);
+            renderToolsList();
+            renderToolDetail();
+        }
+
+        function renderToolDetail() {
+            if (!selectedTool) return;
+
+            const content = document.getElementById('main-content');
+            const paramsHtml = selectedTool.params.length > 0
+                ? selectedTool.params.map(p => `
+                    <div class="param-field ${selectedTool.params.length === 1 ? 'full-width' : ''}">
+                        <label>${escapeHtml(p)}</label>
+                        <input type="text" id="param-${p}" placeholder="Enter ${p}...">
+                    </div>
+                `).join('')
+                : '<p class="no-params">This tool has no parameters</p>';
+
+            content.innerHTML = `
+                <!-- Tool Detail Panel -->
+                <section class="tool-detail">
+                    <div class="tool-detail-header">
+                        <div>
+                            <h2>${escapeHtml(selectedTool.name)}</h2>
+                            <p class="tool-detail-desc">${escapeHtml(selectedTool.description)}</p>
+                        </div>
+                        <div class="tool-actions">
+                            <button class="btn-icon danger" title="Delete" onclick="showDeleteModal('${selectedTool.name}')">🗑️</button>
+                        </div>
+                    </div>
+
+                    <!-- Parameters -->
+                    <div class="params-section">
+                        <h3>Parameters</h3>
+                        <div class="params-grid">
+                            ${paramsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Run Section -->
+                    <div class="run-section">
+                        <button class="btn btn-primary btn-run" id="run-btn" onclick="runTool()">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            Run Tool
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Output Panel -->
+                <section class="output-panel">
+                    <div class="output-header">
+                        <h3>Execution Output</h3>
+                        <div class="output-status" id="output-status">
+                            <span class="status-dot" id="status-dot"></span>
+                            <span id="status-text">Ready</span>
+                        </div>
+                    </div>
+                    <div class="output-content" id="output-content">
+                        <div class="output-line action">Waiting to run...</div>
+                    </div>
+                </section>
+
+                <!-- Script Preview -->
+                <section class="script-preview">
+                    <div class="script-header">
+                        <h3>Script Preview</h3>
+                    </div>
+                    <div class="script-content" id="script-content">${escapeHtml(selectedTool.script_text)}</div>
+                </section>
+            `;
+        }
+
+        function getTimestamp() {
+            const now = new Date();
+            return `[${now.toLocaleTimeString('en-US', { hour12: false })}]`;
+        }
+
+        async function runTool() {
+            if (!selectedTool || isRunning) return;
+
+            // Collect args
+            const args = {};
+            for (const param of selectedTool.params) {
+                const input = document.getElementById(`param-${param}`);
+                if (input && input.value) {
+                    args[param] = input.value;
+                }
+            }
+
+            // Update UI
+            isRunning = true;
+            const runBtn = document.getElementById('run-btn');
+            runBtn.innerHTML = `<div class="spinner" style="width:16px;height:16px;margin:0;"></div> Running...`;
+            runBtn.disabled = true;
+
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const outputContent = document.getElementById('output-content');
+
+            statusDot.className = 'status-dot running';
+            statusText.textContent = 'Running...';
+            outputContent.innerHTML = '';
+
+            // Connect via WebSocket
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/run/${selectedTool.name}`;
+
+            try {
+                currentWebSocket = new WebSocket(wsUrl);
+
+                currentWebSocket.onopen = () => {
+                    currentWebSocket.send(JSON.stringify({ args }));
+                };
+
+                currentWebSocket.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    const line = document.createElement('div');
+                    line.className = `output-line ${data.type}`;
+
+                    const timestamp = document.createElement('span');
+                    timestamp.className = 'timestamp';
+                    timestamp.textContent = getTimestamp();
+
+                    line.appendChild(timestamp);
+
+                    if (data.type === 'success') {
+                        line.appendChild(document.createTextNode('✓ ' + data.message));
+                    } else if (data.type === 'error') {
+                        line.appendChild(document.createTextNode('✗ ' + data.message));
+                    } else {
+                        line.appendChild(document.createTextNode(data.message));
+                    }
+
+                    outputContent.appendChild(line);
+                    outputContent.scrollTop = outputContent.scrollHeight;
+
+                    if (data.type === 'done') {
+                        finishRun(data.exit_code === 0);
+                    }
+                };
+
+                currentWebSocket.onerror = (error) => {
+                    addOutputLine('error', 'WebSocket error occurred');
+                    finishRun(false);
+                };
+
+                currentWebSocket.onclose = () => {
+                    if (isRunning) {
+                        finishRun(false);
+                    }
+                };
+
+            } catch (error) {
+                addOutputLine('error', `Failed to connect: ${error.message}`);
+                finishRun(false);
+            }
+        }
+
+        function addOutputLine(type, message) {
+            const outputContent = document.getElementById('output-content');
+            const line = document.createElement('div');
+            line.className = `output-line ${type}`;
+            line.innerHTML = `<span class="timestamp">${getTimestamp()}</span>${escapeHtml(message)}`;
+            outputContent.appendChild(line);
+            outputContent.scrollTop = outputContent.scrollHeight;
+        }
+
+        function finishRun(success) {
+            isRunning = false;
+            currentWebSocket = null;
+
+            const runBtn = document.getElementById('run-btn');
+            runBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Run Tool`;
+            runBtn.disabled = false;
+
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            if (success) {
+                statusDot.className = 'status-dot success';
+                statusText.textContent = 'Completed';
+            } else {
+                statusDot.className = 'status-dot error';
+                statusText.textContent = 'Failed';
+            }
+        }
+
+        function showDeleteModal(name) {
+            toolToDelete = name;
+            document.getElementById('delete-tool-name').textContent = name;
+            document.getElementById('delete-modal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.remove('active');
+            toolToDelete = null;
+        }
+
+        async function confirmDelete() {
+            if (!toolToDelete) return;
+
+            try {
+                await fetch(`/api/tools/${toolToDelete}`, { method: 'DELETE' });
+                closeDeleteModal();
+
+                if (selectedTool?.name === toolToDelete) {
+                    selectedTool = null;
+                    document.getElementById('main-content').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🎯</div>
+                            <h3>Select a Tool</h3>
+                            <p>Choose a recorded tool from the sidebar to view details and run it</p>
+                        </div>
+                    `;
+                }
+
+                refreshTools();
+            } catch (error) {
+                alert('Failed to delete tool');
+            }
+        }
+
+        function showRecordHelp() {
+            document.getElementById('record-modal').classList.add('active');
+        }
+
+        function closeRecordModal() {
+            document.getElementById('record-modal').classList.remove('active');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
